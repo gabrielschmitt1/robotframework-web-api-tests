@@ -1,0 +1,28 @@
+stages:
+  - Acceptance Tests
+
+# Job Linux Fedora - execução dos testes sem docker
+WEB Testing in Chrome:
+    stage: Acceptance Tests
+    image: fedora:31
+    tags:
+        - docker
+    artifacts:
+        when: always
+        paths:
+            - ./results
+        expire_in: 1 week
+    before_script:
+        - cat /etc/*-release
+        - dnf upgrade -y >/dev/null && echo OK
+        - dnf install -y python37 >/dev/null && echo OK
+        - dnf install -y chromedriver-stable >/dev/null && echo OK
+        - dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm >/dev/null && echo OK
+        - chown root /usr/bin/chromedriver >/dev/null && echo OK
+        - chmod +x /usr/bin/chromedriver >/dev/null && echo OK
+        - chmod 755 /usr/bin/chromedriver >/dev/null && echo OK
+        - chromedriver --version
+        - python --version
+        - pip3 install robotframework robotframework-seleniumlibrary robotframework-requests | grep "Successfully installed"
+    script:
+        - robot -d ./results -v BROWSER:headlesschrome ./tests
