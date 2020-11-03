@@ -27,21 +27,6 @@ pipeline {
             echo 'Running regression tests'
             sh 'robot -d ./results -v BROWSER:headlesschrome ./tests'
         }
-        post {
-            always {
-            step([$class: 'RobotPublisher',
-                    disableArchiveOutput: false,
-                    logFileName: 'results/log.html',
-                    onlyCritical: true,
-                    otherFiles: 'results/*.png',
-                    outputFileName: 'results/output.xml',
-                    outputPath: '.',
-                    passThreshold: 90,
-                    reportFileName: 'results/report.html',
-                    unstableThreshold: 100
-                    ])
-            }
-        }
       }
       stage('Prod') {
          steps {
