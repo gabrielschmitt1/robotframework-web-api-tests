@@ -28,6 +28,26 @@ pipeline {
             sh 'robot -d ./results -v BROWSER:headlesschrome ./tests'
         }
       }
+      stage('Report') {
+         steps {
+            echo 'Reporting...'
+            script {
+               step(
+                  [
+                     $class                    : 'RobotPublisher',
+                     outputPath                : './results',
+                     outputFileName            : "*.xml",
+                     reportFileName            : "report.html",
+                     logFileName               : "log.html",
+                     disableArchiveOutput      : false,
+                     passThreshold             : 100,
+                     unstableThreshold         : 95.0,
+                     otherFiles                : "*.png"
+                  ]
+               )
+            }  
+         }
+      }
       stage('Prod') {
          steps {
             echo 'System is ready'
