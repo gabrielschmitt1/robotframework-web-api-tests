@@ -6,5 +6,6 @@ robotframework==3.2.2
 robotframework-pythonlibcore==2.1.0
 robotframework-requests==0.7.1
 robotframework-seleniumlibrary==4.5.0
+allure-robotframework
 selenium==3.141.0
 urllib3==1.25.11
